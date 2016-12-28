@@ -1,5 +1,5 @@
 {
-  "name": "socketio-vuejs-nodejs-mongodb",
+  "name": "socketio-chat",
   "version": "1.0.0",
   "description": "A Vue.js + SocketIO + NodeJS + MongoDB chat project",
   "author": "Neng Liangpornrattana <punneng@gmail.com>",
@@ -10,7 +10,8 @@
     "unit": "karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
     "test": "npm run unit && npm run e2e",
-    "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
+    "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
+    "test-api": "mocha --recursive ./api/test"
   },
   "dependencies": {
     "vue": "^2.1.0",
@@ -18,7 +19,8 @@
     "lodash": "^4.16.4",
     "mongoose": "^4.7.4",
     "socket.io": "^1.5.1",
-    "bluebird": "^3.4.7"
+    "bluebird": "^3.4.7",
+    "dotenv": "^2.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.0",

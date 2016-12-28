@@ -4,13 +4,10 @@ if (!process.env.NODE_ENV) process.env.NODE_ENV = JSON.parse(config.dev.env.NODE
 const path = require('path')
 const express = require('express')
 const webpack = require('webpack')
-const _       = require('lodash')
 const proxyMiddleware = require('http-proxy-middleware')
 const webpackConfig = process.env.NODE_ENV === 'testing'
   ? require('./webpack.prod.conf')
   : require('./webpack.dev.conf')
-
-
 
 // default port where dev server listens for incoming traffic
 const port = process.env.PORT || config.dev.port
@@ -20,7 +17,6 @@ const proxyTable = config.dev.proxyTable
 
 const app = express()
 const server = require('http').Server(app)
-const io = require('socket.io')(server)
 const compiler = webpack(webpackConfig)
 
 const devMiddleware = require('webpack-dev-middleware')(compiler, {
@@ -65,25 +61,14 @@ app.use(staticPath, express.static('./static'))
 
 /* --------------- the code above is gnerated from vue cli ------------------ */
 
+const SocketService = require('../api/services/socket')
 module.exports = server.listen(port, function (err) {
   if (err) {
     console.log(err)
     return
   }
-  io.on('connection', (socket) => {
-    // socket.broadcast.emit('chat message', 'a user connected')
-    socket.on('chat register', (displayName) => {
-      const onlineUsers = _.map(io.clients().connected, onlineSocket => {
-        return onlineSocket._displayName
-      })
-      if (_.includes(onlineUsers, displayName)) {
-        socket.emit('chat reject register', displayName)
-      } else {
-        socket._displayName = displayName
-        socket.emit('chat register', displayName)
-      }
-    })
-  })
+
+  SocketService.init(server)
 
   const uri = 'http://localhost:' + port
   console.log('Listening at ' + uri + '\n')
