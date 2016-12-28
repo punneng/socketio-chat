@@ -1,11 +1,11 @@
 {
   "name": "socketio-vuejs-nodejs-mongodb",
   "version": "1.0.0",
-  "description": "A Vue.js + SocketIO + NodeJS + MongoDB project",
+  "description": "A Vue.js + SocketIO + NodeJS + MongoDB chat project",
   "author": "Neng Liangpornrattana <punneng@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "node build/dev-server.js",
+    "dev": "gulp dev",
     "build": "node build/build.js",
     "unit": "karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
@@ -13,7 +13,12 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs"
   },
   "dependencies": {
-    "vue": "^2.1.0"
+    "vue": "^2.1.0",
+    "vuex": "^2.1.1",
+    "lodash": "^4.16.4",
+    "mongoose": "^4.7.4",
+    "socket.io": "^1.5.1",
+    "bluebird": "^3.4.7"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.0",
@@ -63,7 +68,6 @@
     "nightwatch": "^0.9.8",
     "selenium-server": "2.53.1",
     "semver": "^5.3.0",
-    "opn": "^4.0.2",
     "ora": "^0.3.0",
     "shelljs": "^0.7.4",
     "url-loader": "^0.5.7",
@@ -73,7 +77,11 @@
     "webpack": "^1.13.2",
     "webpack-dev-middleware": "^1.8.3",
     "webpack-hot-middleware": "^2.12.2",
-    "webpack-merge": "^0.14.1"
+    "webpack-merge": "^0.14.1",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.3",
+    "gulp": "^3.9.1",
+    "gulp-nodemon": "^2.2.1"
   },
   "engines": {
     "node": ">= 4.0.0",
