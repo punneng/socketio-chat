@@ -14,13 +14,15 @@
     "test-api": "mocha --recursive ./api/test"
   },
   "dependencies": {
-    "vue": "^2.1.0",
-    "vuex": "^2.1.1",
+    "bluebird": "^3.4.7",
+    "dotenv": "^2.0.0",
+    "jquery": "^3.1.1",
     "lodash": "^4.16.4",
+    "moment": "^2.17.1",
     "mongoose": "^4.7.4",
     "socket.io": "^1.5.1",
-    "bluebird": "^3.4.7",
-    "dotenv": "^2.0.0"
+    "vue": "^2.1.0",
+    "vuex": "^2.1.1"
   },
   "devDependencies": {
     "autoprefixer": "^6.4.0",

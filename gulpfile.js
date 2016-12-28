@@ -9,7 +9,8 @@ gulp.task('backend', () => {
       'node_modules/**',
       'test/**',
       'dist/**',
-      'src/**'
+      'src/**',
+      'api/test/**'
     ]
   })
   .on('restart', () => { console.log(`Server restarted!`) })
