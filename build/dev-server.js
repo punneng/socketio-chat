@@ -1,25 +1,29 @@
 require('./check-versions')()
-var config = require('../config')
+const config = require('../config')
 if (!process.env.NODE_ENV) process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV)
-var path = require('path')
-var express = require('express')
-var webpack = require('webpack')
-var opn = require('opn')
-var proxyMiddleware = require('http-proxy-middleware')
-var webpackConfig = process.env.NODE_ENV === 'testing'
+const path = require('path')
+const express = require('express')
+const webpack = require('webpack')
+const _       = require('lodash')
+const proxyMiddleware = require('http-proxy-middleware')
+const webpackConfig = process.env.NODE_ENV === 'testing'
   ? require('./webpack.prod.conf')
   : require('./webpack.dev.conf')
 
+
+
 // default port where dev server listens for incoming traffic
-var port = process.env.PORT || config.dev.port
+const port = process.env.PORT || config.dev.port
 // Define HTTP proxies to your custom API backend
 // https://github.com/chimurai/http-proxy-middleware
-var proxyTable = config.dev.proxyTable
+const proxyTable = config.dev.proxyTable
 
-var app = express()
-var compiler = webpack(webpackConfig)
+const app = express()
+const server = require('http').Server(app)
+const io = require('socket.io')(server)
+const compiler = webpack(webpackConfig)
 
-var devMiddleware = require('webpack-dev-middleware')(compiler, {
+const devMiddleware = require('webpack-dev-middleware')(compiler, {
   publicPath: webpackConfig.output.publicPath,
   stats: {
     colors: true,
@@ -27,7 +31,7 @@ var devMiddleware = require('webpack-dev-middleware')(compiler, {
   }
 })
 
-var hotMiddleware = require('webpack-hot-middleware')(compiler)
+const hotMiddleware = require('webpack-hot-middleware')(compiler)
 // force page reload when html-webpack-plugin template changes
 compiler.plugin('compilation', function (compilation) {
   compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
@@ -38,7 +42,7 @@ compiler.plugin('compilation', function (compilation) {
 
 // proxy api requests
 Object.keys(proxyTable).forEach(function (context) {
-  var options = proxyTable[context]
+  const options = proxyTable[context]
   if (typeof options === 'string') {
     options = { target: options }
   }
@@ -56,19 +60,31 @@ app.use(devMiddleware)
 app.use(hotMiddleware)
 
 // serve pure static assets
-var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
+const staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
 
-module.exports = app.listen(port, function (err) {
+/* --------------- the code above is gnerated from vue cli ------------------ */
+
+module.exports = server.listen(port, function (err) {
   if (err) {
     console.log(err)
     return
   }
-  var uri = 'http://localhost:' + port
-  console.log('Listening at ' + uri + '\n')
+  io.on('connection', (socket) => {
+    // socket.broadcast.emit('chat message', 'a user connected')
+    socket.on('chat register', (displayName) => {
+      const onlineUsers = _.map(io.clients().connected, onlineSocket => {
+        return onlineSocket._displayName
+      })
+      if (_.includes(onlineUsers, displayName)) {
+        socket.emit('chat reject register', displayName)
+      } else {
+        socket._displayName = displayName
+        socket.emit('chat register', displayName)
+      }
+    })
+  })
 
-  // when env is testing, don't need open it
-  if (process.env.NODE_ENV !== 'testing') {
-    opn(uri)
-  }
+  const uri = 'http://localhost:' + port
+  console.log('Listening at ' + uri + '\n')
 })
