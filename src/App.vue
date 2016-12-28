@@ -12,8 +12,8 @@
 import Socket from 'socket.io-client'
 import store from './store'
 
-import Signin from './components/signin'
-import Chat from './components/chat'
+import Signin from './components/Signin'
+import Chat from './components/Chat'
 
 import { mapActions } from 'vuex'
 
@@ -40,4 +40,5 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
   }
+
 </style>

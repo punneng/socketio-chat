@@ -1,10 +1,15 @@
 const _ = require('lodash')
 const P = require('bluebird')
 
+const Mongoose = require('../lib/mongoose')
+
+Mongoose.init()
 const MessageService = require('./message')
 
 function start (io) {
   io.on('connection', (socket) => {
+
+    // chat register => receive regiteration
     socket.on('chat register', (displayName) => {
       const onlineUsers = _.map(io.clients().connected, onlineSocket => {
         return onlineSocket._displayName
@@ -17,18 +22,20 @@ function start (io) {
       }
     })
 
-    socket.on('chat message', (message) => {
-      const messageAttrs = { displayName: 'neng', message }
+    // chat message => receive a message from a client
+    socket.on('chat message', ({displayName, message}) => {
+      const messageAttrs = { displayName: displayName, message }
       return new P.resolve(MessageService.saveAsync(messageAttrs))
       .then((messageObject) => {
         if (messageObject.errors) {
           socket.emit('chat error', messageObject.errors)
         } else {
-          socket.broadcast.emit('chat message', messageObject)
+          io.emit('chat message', messageObject)
         }
       })
     })
 
+    // chat history => receive a request to get the chat history
     socket.on('chat history', () => {
       return new P.resolve(MessageService.getHistoryAsync())
       .then(messageObjects => {

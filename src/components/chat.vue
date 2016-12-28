@@ -1,15 +1,19 @@
 <template>
   <div class="row">
-    <message></message>
-    <user></user>
+    <message-view></message-view>
+    <user-view></user-view>
   </div>
 </template>
 
 <script>
-import Message from './message'
-import User from './user'
+import MessageView from './MessageView'
+import UserView from './UserView'
 
 export default {
-  components: { Message, User }
+  components: { MessageView, UserView }
 }
 </script>
+
+<style scoped>
+
+</style>

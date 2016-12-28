@@ -5,11 +5,13 @@ Vue.use(Vuex)
 
 const mutations = {
   INIT_SOCKET (state, socket) {
+    socket.on('chat message', (message) => {
+      state.messages.push(message)
+    })
     state.socket = socket
   },
 
   REGISTER (state, displayName) {
-    console.log('displayName', displayName)
     const socket = state.socket
     socket.emit('chat register', displayName)
     socket.on('chat register', (registedName) => {
@@ -23,11 +25,16 @@ const mutations = {
   },
 
   SEND_MESSAGE (state, message) {
-    // send message
+    const socket = state.socket
+    socket.emit('chat message', { displayName: state.displayName, message })
   },
 
   GET_MESSAGE_HISTORY (state) {
-    // get message history
+    const socket = state.socket
+    socket.emit('chat history')
+    socket.on('chat history', messages => {
+      state.messages = messages
+    })
   }
 }
 

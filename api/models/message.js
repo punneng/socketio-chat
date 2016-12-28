@@ -12,6 +12,11 @@ const schema = new Mongoose.Schema({
     required: true
   },
 
+  channel: {
+    type: Object,
+    default: {}
+  },
+
   createdAt: {
     type: Date,
     default: Date.now,
