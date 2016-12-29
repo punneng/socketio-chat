@@ -6,19 +6,25 @@ const Mongoose = require('../lib/mongoose')
 Mongoose.init()
 const MessageService = require('./message')
 
+function getOnlineUsers (io) {
+  return _(io.clients().connected)
+  .map(socket => {
+    return _.get(socket, '_displayName', null)
+  })
+  .compact()
+}
+
 function start (io) {
   io.on('connection', (socket) => {
-
     // chat register => receive regiteration
-    socket.on('chat register', (displayName) => {
-      const onlineUsers = _.map(io.clients().connected, onlineSocket => {
-        return onlineSocket._displayName
-      })
+    socket.on('user register', (displayName) => {
+      const onlineUsers = getOnlineUsers(io)
       if (_.includes(onlineUsers, displayName)) {
-        socket.emit('chat reject register', displayName)
+        socket.emit('user reject register', displayName)
       } else {
         socket._displayName = displayName
-        socket.emit('chat register', displayName)
+        socket.emit('user register', displayName)
+        socket.broadcast.emit('user connect', displayName)
       }
     })
 
@@ -36,11 +42,21 @@ function start (io) {
     })
 
     // chat history => receive a request to get the chat history
-    socket.on('chat history', () => {
+    socket.on('chat starter', () => {
       return new P.resolve(MessageService.getHistoryAsync())
       .then(messageObjects => {
         socket.emit('chat history', messageObjects)
       })
+      .tap(() => {
+        const users = getOnlineUsers(io)
+        socket.emit('user users', users)
+      })
+    })
+
+    socket.on('disconnect', () => {
+      if (socket._displayName) {
+        io.emit('user disconnect', socket._displayName)
+      }
     })
   })
 }

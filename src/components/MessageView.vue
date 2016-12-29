@@ -5,15 +5,15 @@
         RECENT CHAT HISTORY
       </div>
       <div class="panel-body">
-        <ul v-for="messageObject in $store.state.messages" class="media-list">
-          <li class="media">
+        <ul class="media-list">
+          <li v-for="message in messages" class="media">
             <div class="media-body">
               <div class="media">
-                <div v-bind:class="'media-body ' + textAlign(messageObject.displayName)">
-                    {{ messageObject.message }}
+                <div v-bind:class="'media-body ' + textAlign(message.displayName)">
+                    {{ message.message }}
                     <br>
                    <small class="text-muted">
-                     {{ messageObject.displayName }} | {{ fmtDate(messageObject.createdAt) }}
+                     {{ message.displayName }} | {{ fmtDate(message.createdAt) }}
                    </small>
                     <hr>
                 </div>
@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import Moment from 'moment'
 import jQuery from 'jquery'
 
@@ -36,19 +35,13 @@ import MessageInput from './MessageInput.vue'
 
 export default {
   components: { MessageInput },
-  created () {
-    this.getMessageHistory()
-  },
 
   updated () {
+    console.log('shittttttt')
     jQuery('.panel-body').scrollTop(jQuery('.panel-body')[0].scrollHeight)
   },
 
   methods: {
-    ...mapActions({
-      getMessageHistory: 'getMessageHistory'
-    }),
-
     fmtDate (dateStr) {
       // 23rd June at 5:00pm
       return Moment(dateStr).format('Do MMM [at] h:mm a')
@@ -58,7 +51,8 @@ export default {
       ? 'text-right'
       : 'text-left'
     }
-  }
+  },
+  props: ['messages']
 }
 </script>
 
