@@ -7,6 +7,7 @@ if (env != 'production'){
 }
 
 const globalConfig = {
+  NODE_ENV:                   env,
   MONGO_USER:                 getEnv('MONGO_USER') || undefined,
   MONGO_PASS:                 getEnv('MONGO_PASS') || undefined
 }

@@ -1,6 +1,6 @@
 const DBHelper       = require('../../test-helper.js')
 const P              = require('bluebird')
-const Mongoose       = require('mongoose')
+const Mongoose       = require('../../../lib/mongoose')
 const Sinon          = require('sinon')
 const assert         = require('assert')
 const MessageService = require('../../../services/message')
@@ -8,7 +8,7 @@ const MessageModel   = require('../../../models/message')
 
 describe('Message Service', () => {
   afterEach(() => {
-    DBHelper.clearDB()
+    Mongoose.clearDB()
   })
 
   describe('saveAsync()', () => {
