@@ -24,7 +24,7 @@ export default {
       <div class="input-group">
         <input type="text" class="form-control" placeholder="Display Name" v-model="displayName">
         <span class="input-group-btn">
-          <button class="btn btn-info" type="button" v-on:click="signin">SIGNIN</button>
+          <button class="btn btn-info" type="button" name="signin" v-on:click="signin">SIGNIN</button>
         </span>
       </div>
     </div>

@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <message-view :messages="$store.state.messages"></message-view>
+    <message-view :messages="$store.state.messages" :displayName="$store.state.displayName"></message-view>
     <user-view :users="$store.state.users"></user-view>
   </div>
 </template>

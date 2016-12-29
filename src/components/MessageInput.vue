@@ -3,7 +3,7 @@
     <div class="input-group">
       <input type="text" class="form-control" placeholder="Enter Message" v-model="message">
       <span class="input-group-btn">
-        <button class="btn btn-info" type="button" v-on:click="send">SEND</button>
+        <button class="btn btn-info" type="button" name="send" v-on:click="send">SEND</button>
       </span>
     </div>
   </div>

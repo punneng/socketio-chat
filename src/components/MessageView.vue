@@ -37,7 +37,6 @@ export default {
   components: { MessageInput },
 
   updated () {
-    console.log('shittttttt')
     jQuery('.panel-body').scrollTop(jQuery('.panel-body')[0].scrollHeight)
   },
 
@@ -46,13 +45,13 @@ export default {
       // 23rd June at 5:00pm
       return Moment(dateStr).format('Do MMM [at] h:mm a')
     },
-    textAlign (displayName) {
-      return displayName === this.$store.state.displayName
+    textAlign (name) {
+      return name === this.displayName
       ? 'text-right'
       : 'text-left'
     }
   },
-  props: ['messages']
+  props: ['messages', 'displayName']
 }
 </script>
 
