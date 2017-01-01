@@ -1,0 +1,11 @@
+db:
+  image: mongo
+server:
+  image: punneng/socketio-chat
+  environment:
+    - MONGO_URL=mongodb://db/chat_production
+  ports:
+    - "8080:8080"
+  links:
+  - db
+  command: npm run dev
