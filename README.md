@@ -58,3 +58,4 @@ $ npm test:api
 - Implement user sessions
 - Fix docker compose database url
 - Message and @mention Notification
+- Replace request-respone action with socketio with http request
