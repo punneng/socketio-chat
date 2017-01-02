@@ -20,7 +20,7 @@ import { mapActions } from 'vuex'
 export default {
   name: 'app',
   store,
-  mounted () {
+  created () {
     const socket = Socket('http://localhost:8080')
     this.initSocket(socket)
   },
